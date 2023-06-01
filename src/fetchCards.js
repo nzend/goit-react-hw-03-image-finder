@@ -7,11 +7,11 @@ const options = {
   orientation: 'horizontal',
 
   page: 1,
-  per_page: '12',
+  perPage: '12',
 };
 
-export default async function fetchCards(searchImg, currentPage, perPage) {
-  const { baseUrl, key, image_type, orientation } = options;
+export default async function fetchCards(searchImg, currentPage) {
+  const { baseUrl, key, image_type, orientation, perPage } = options;
 
   const response = await axios.get(
     `${baseUrl}?key=${key}&q=${searchImg}&image_type=${image_type}&orientation=${orientation}&page=${currentPage}&per_page=${perPage}`

@@ -2,18 +2,10 @@ import React, { Component } from 'react';
 import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
-  
-
-  // handleSubmit = evt => {
-  //   evt.preventDefault();
-  //   this.props.onSubmit(this.state);
-  //   // this.setState({ name: '', number: '' });
-  // };
- 
   render() {
     return (
       <header className={css.Searchbar}>
-        <form onSubmit={this.props.onSubmit} className={css.SearchForm}>
+        <form className={css.SearchForm}>
           <button type="submit" className={css.SearchForm__button}>
             <span className="#">Search</span>
           </button>
@@ -22,10 +14,9 @@ class Searchbar extends Component {
             // onChange={this.props.onChange}
             className={css.SearchForm__input}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
-            value={this.props.onSubmit()}
           />
         </form>
       </header>

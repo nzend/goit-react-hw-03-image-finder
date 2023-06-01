@@ -4,25 +4,29 @@ import Searchbar from '../Searchbar/Searchbar';
 
 class App extends Component {
   state = {
-    articles: [],
-    search: '',
+    photos: {},
   };
-  hendleSubmit = evt => {
-    // evt.preventDefault();
-    // this.setState({ search: this.handleChange() });
-  };
-  // handleChange = evt => {
-  //   // console.log(evt.currentTarget.value);
-  //   const value = evt.currentTarget.value;
-  //   return value;
-  // };
+
+  async componentDidMount() {
+    const cards = await fetchCards('cat', 1);
+    this.setState({ photos: cards });
+  }
 
   render() {
+    console.log(this.state);
     return (
-      <Searchbar
-        onChange={this.handleChange}
-        onSubmit={this.hendleSubmit}
-      ></Searchbar>
+      <>
+        <Searchbar></Searchbar>
+        {this.state.photos && (
+          <ul>
+            {/* {this.state.photos.map(photo => (
+              <li> card
+                <img src="#" alt="#" />
+              </li>
+            ))} */}
+          </ul>
+        )}
+      </>
     );
   }
 }
