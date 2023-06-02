@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
-import fetchCards from '../../fetchCards';
+
 import Searchbar from '../Searchbar/Searchbar';
+import ImageGallery from '../ImageGallery/ImageGallery';
 
 class App extends Component {
   state = {
-    photos: {},
+    searchQuery: '',
   };
 
-  async componentDidMount() {
-    const cards = await fetchCards('cat', 1);
-    this.setState({ photos: cards });
-  }
+  handleFormSubmit = searchQuery => {
+    console.log(searchQuery);
+    this.setState({ searchQuery });
+  };
 
   render() {
-    console.log(this.state);
     return (
       <>
-        <Searchbar></Searchbar>
-        {this.state.photos && (
-          <ul>
-            {/* {this.state.photos.map(photo => (
-              <li> card
-                <img src="#" alt="#" />
-              </li>
-            ))} */}
-          </ul>
-        )}
+        <Searchbar onSubmit={this.handleFormSubmit}></Searchbar>
+        <ImageGallery searchQuery={this.state.searchQuery}></ImageGallery>
       </>
     );
   }
