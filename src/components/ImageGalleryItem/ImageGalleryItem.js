@@ -4,7 +4,7 @@ export const ImageGalleryItem = ({ webformatURL }) => {
   return (
     <>
       <li className={css.gallery__item}>
-        <img src={webformatURL} alt="#" />
+        <img className={css.gallery__item__image} src={webformatURL} alt="#" />
       </li>
     </>
   );
