@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import css from './ImageGallery.module.css';
 import fetchCards from '../../fetchCards';
-import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+import  ImageGalleryItem  from '../ImageGalleryItem/ImageGalleryItem';
 
 class ImageGallery extends Component {
   state = {
@@ -28,6 +28,7 @@ class ImageGallery extends Component {
         .finally(() => this.setState({ loading: false }));
     }
   }
+  
 
   render() {
     const { images, error, status } = this.state;
@@ -49,6 +50,8 @@ class ImageGallery extends Component {
               key={image.id}
               id={image.id}
               webformatURL={image.webformatURL}
+              largeImageURL={image.largeImageURL}
+              hendlImgClick={this.hendlImgClick}
             ></ImageGalleryItem>
           ))}
         </ul>

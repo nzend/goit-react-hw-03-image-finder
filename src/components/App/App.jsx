@@ -12,6 +12,7 @@ class App extends Component {
     console.log(searchQuery);
     this.setState({ searchQuery });
   };
+ 
 
   render() {
     return (
