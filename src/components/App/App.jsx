@@ -10,10 +10,11 @@ let page = 1;
 
 class App extends Component {
   state = {
-    status: 'idle',
     searchQuery: '',
-    images: null,
-    total: 0,
+    items: [],
+
+    status: 'idle',
+    totalHits: 0,
   };
 
   handleSubmit = async searchQuery => {
@@ -24,17 +25,18 @@ class App extends Component {
     } else {
       try {
         this.setState({ status: 'pending' });
-        const { total, hits } = await fetchImages(searchQuery, page);
+        const { totalHits, hits } = await fetchImages(searchQuery, page);
         if (hits.length < 1) {
           this.setState({ status: 'idle' });
           alert(
             'Sorry, there are no images matching your search query. Please try again.'
           );
+          this.setState({ status: 'rejected' });
         } else {
           this.setState({
-            images: hits,
+            items: hits,
             searchQuery,
-            total,
+            totalHits: totalHits,
             status: 'resolved',
           });
         }
@@ -49,7 +51,7 @@ class App extends Component {
     try {
       const { hits } = await fetchImages(this.state.searchQuery, (page += 1));
       this.setState(prevState => ({
-        images: [...prevState.images, ...hits],
+        items: [...prevState.items, ...hits],
         status: 'resolved',
       }));
     } catch (error) {
@@ -57,7 +59,7 @@ class App extends Component {
     }
   };
   render() {
-    const { total, status, images } = this.state;
+    const { totalHits, status, items } = this.state;
     if (status === 'idle') {
       return (
         <div className={css.app}>
@@ -69,8 +71,9 @@ class App extends Component {
       return (
         <div className={css.app}>
           <Searchbar onSubmit={this.handleSubmit} />
-
+          <ImageGallery page={page} items={this.state.items} />
           <Loader />
+          {totalHits > 12 && <Button onClick={this.onNextPage} />}
         </div>
       );
     }
@@ -78,7 +81,8 @@ class App extends Component {
       return (
         <div className={css.app}>
           <Searchbar onSubmit={this.handleSubmit} />
-          <p>Something wrong, try later</p>
+
+          <div className={css.error__notification}>Something wrong, try later</div>
         </div>
       );
     }
@@ -86,8 +90,8 @@ class App extends Component {
       return (
         <div className={css.app}>
           <Searchbar onSubmit={this.handleSubmit} />
-          <ImageGallery page={page} items={this.state.images} />
-          {total > 12 && total > images.length && (
+          <ImageGallery page={page} items={this.state.items} />
+          {totalHits > 12 && totalHits > items.length && (
             <Button onClick={this.onNextPage} />
           )}
         </div>
