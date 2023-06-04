@@ -6,15 +6,10 @@ class ImageGalleryItem extends Component {
     largeImg: this.props.largeImageURL,
   };
 
-  hendlImgClick = evt => {
-    console.log(evt.currentTarget);
-    console.log(this.state.largeImg);
-  };
-
   render() {
     return (
       <>
-        <li onClick={this.hendlImgClick} className={css.gallery__item}>
+        <li onClick={this.props.onCloseModal} className={css.gallery__item}>
           <img
             className={css.gallery__item__image}
             src={this.props.webformatURL}

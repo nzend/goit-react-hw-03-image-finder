@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import css from './ImageGallery.module.css';
 import fetchCards from '../../fetchCards';
-import  ImageGalleryItem  from '../ImageGalleryItem/ImageGalleryItem';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
 class ImageGallery extends Component {
   state = {
@@ -9,14 +9,13 @@ class ImageGallery extends Component {
     error: false,
     status: 'idle',
   };
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchQuery !== this.props.searchQuery) {
-      console.log('Змінився запит');
       this.setState({ status: 'panding' });
 
       fetchCards(this.props.searchQuery, 1)
         .then(images => {
-          console.log(images);
           if (images.total === 0) {
             return Promise.reject(
               new Error(`Немає картинок за запитом ${this.props.searchQuery}`)
@@ -28,7 +27,6 @@ class ImageGallery extends Component {
         .finally(() => this.setState({ loading: false }));
     }
   }
-  
 
   render() {
     const { images, error, status } = this.state;
@@ -51,7 +49,7 @@ class ImageGallery extends Component {
               id={image.id}
               webformatURL={image.webformatURL}
               largeImageURL={image.largeImageURL}
-              hendlImgClick={this.hendlImgClick}
+              onCloseModal={this.props.onCloseModal}
             ></ImageGalleryItem>
           ))}
         </ul>
