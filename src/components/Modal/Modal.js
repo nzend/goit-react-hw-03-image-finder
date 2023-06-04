@@ -1,42 +1,47 @@
 import css from './Modal.module.css';
-
-import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
+const modalRoot = document.querySelector('#modal__root');
 
-const modalPortal = document.querySelector('#modal__root');
-
-export default class Modal extends Component {
-  hendleKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.onCloseModal();
-    }
-  };
-
-  hendleBackdropClick = e => {
-    if (e.target === e.currentTarget) {
-      this.props.onCloseModal();
-    }
-  };
-
+class Modal extends Component {
   componentDidMount() {
-    window.addEventListener('keydown', this.hendleKeyDown);
+    window.addEventListener('keydown', this.keyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.hendleKeyDown);
+    window.removeEventListener('keydown', this.keyDown);
   }
 
+  keyDown = evt => {
+    if (evt.code === 'Escape') {
+      this.props.onClose();
+    }
+  };
+
+  onOverlayClose = evt => {
+    if (evt.currentTarget === evt.target) {
+      this.props.onClose();
+    }
+  };
+
   render() {
+    const { largeImageURL } = this.props.image;
     return createPortal(
-      <div className={css.Modal__backdrop} onClick={this.hendleBackdropClick}>
-        <div className={css.Modal__content}>
-         
-          <h1>Image</h1>
-          <img src="#" alt="#" />
+      <div onClick={this.onOverlayClose} className={css.modal__backdrop}>
+        <div className={css.modal__content}>
+          <img className={css.modal__img} src={largeImageURL} alt="img" />
         </div>
       </div>,
-      modalPortal
+      modalRoot
     );
   }
 }
+
+export default Modal;
+
+Modal.propTypes = {
+  image: PropTypes.object,
+  onClose: PropTypes.func,
+};

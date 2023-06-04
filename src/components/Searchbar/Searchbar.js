@@ -1,40 +1,40 @@
+import css from "./Searchbar.module.css";
 import React, { Component } from 'react';
-import css from './Searchbar.module.css';
+import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa';
 
 class Searchbar extends Component {
   state = {
-    searchQuery: '',
+    inputData: '',
+  };
+  onChangeInput = e => {
+    this.setState({ inputData: e.currentTarget.value.toLowerCase() });
   };
 
-  handleNameChange = evt => {
-    this.setState({ searchQuery: evt.currentTarget.value.toLowerCase() });
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.onSubmit(this.state.inputData);
+    this.setState({ inputData: '' });
   };
-  handleSubmit = evt => {
-    evt.preventDefault();
-    if (this.state.searchQuery.trim() === '') {
-      alert('Введіть пошуковий запит');
-      return;
-    }
-    this.props.onSubmit(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
-  };
+
   render() {
+    const { inputData } = this.state.inputData;
     return (
-      <header className={css.Searchbar}>
-        <form className={css.SearchForm} onSubmit={this.handleSubmit}>
-          <button type="submit" className={css.SearchForm__button}>
-            <span className="#">Search</span>
+      <header className={css.searchbar}>
+        <form className={css.searchForm} onSubmit={this.handleSubmit}>
+          <button type="submit" className={css.searchForm__button}>
+           <FaSearch></FaSearch>
           </button>
 
           <input
-            // onChange={this.props.onChange}
-            className={css.SearchForm__input}
+            className={css.searchForm__input}
+            name="inputData"
+            value={inputData}
+            onChange={this.onChangeInput}
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={this.state.searchQuery}
-            onChange={this.handleNameChange}
           />
         </form>
       </header>
@@ -43,3 +43,6 @@ class Searchbar extends Component {
 }
 
 export default Searchbar;
+Searchbar.propType = {
+  onSubmit: PropTypes.func.isRequired,
+};
